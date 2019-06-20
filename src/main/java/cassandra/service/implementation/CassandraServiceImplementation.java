@@ -68,8 +68,24 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void insertCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
+        this.cassandraRepository.insertCategoryOneTotal(categoryOneTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void insertApplicationSizeRating(ApplicationSizeRating applicationSizeRating) {
         this.cassandraRepository.insertApplicationSizeRating(applicationSizeRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
+        this.cassandraRepository.insertCategoryTwoTotal(categoryTwoTotal);
     }
 
     /**
@@ -84,6 +100,13 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void updateCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
+        this.cassandraRepository.updateCategoryOneTotal(categoryOneTotal);
+    }
+  
+    /**
+     * {@inheritDoc}
+     */
     public void insertApplicationGenreRating(ApplicationGenreRating applicationGenreRating) {
         this.cassandraRepository.insertApplicationGenreRating(applicationGenreRating);
     }
@@ -92,8 +115,23 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void updateCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
+        this.cassandraRepository.updateCategoryTwoTotal(categoryTwoTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void insertApplicationDateRating(ApplicationDateRating applicationDateRating) {
         this.cassandraRepository.insertApplicationDateRating(applicationDateRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CategoryOneTotal findCategoryOneById(Detail detail) {
+        return this.cassandraRepository.findCategoryOneById(detail);
     }
 
     /**
@@ -108,6 +146,13 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public CategoryTwoTotal findCategoryTwoById(Detail detail) {
+        return this.cassandraRepository.findCategoryTwoById(detail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void insertApplicationCategoryRating(ApplicationCategoryRating applicationCategoryRating) {
         this.cassandraRepository.insertApplicationCategoryRating(applicationCategoryRating);
     }

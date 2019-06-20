@@ -96,4 +96,48 @@ public interface CassandraService {
      */
     void executeBatch(BatchStatement batchStatement);
 
+    /**
+     * Insert a new category one detail total.
+     *
+     * @param categoryOneTotal Amount to be inserted or updated.
+     */
+    void insertCategoryOneTotal(CategoryOneTotal categoryOneTotal);
+
+    /**
+     * Insert a new category two detail total.
+     *
+     * @param categoryTwoTotal Amount to be inserted or updated.
+     */
+    void insertCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal);
+
+    /**
+     * Update a category one detail total.
+     *
+     * @param categoryOneTotal Amount to be inserted or updated.
+     */
+    void updateCategoryOneTotal(CategoryOneTotal categoryOneTotal);
+
+    /**
+     * Update a category two detail total.
+     *
+     * @param categoryTwoTotal Amount to be inserted or updated.
+     */
+    void updateCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal);
+
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryOneTotal findCategoryOneById(Detail detail);
+
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryTwoTotal findCategoryTwoById(Detail detail);
+
 }

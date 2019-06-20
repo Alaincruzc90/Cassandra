@@ -1,6 +1,7 @@
 package cassandra.repository.implementation;
 
 import cassandra.repository.CassandraRepository;
+import com.datastax.driver.core.*;
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.SimpleStatement;
@@ -219,5 +220,35 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
     @Override
     public void executeBatch(BatchStatement batchStatement) {
         this.session.execute(batchStatement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CategoryOneTotal findCategoryOneById(Detail detail) {
+        String query = "SELECT * FROM write_test.cat_one_sum WHERE cat_one_id = " + detail.getCategoryOneId() + ";";
+        ResultSet rs = session.execute(query);
+        CategoryOneTotal categoryOneTotal = new CategoryOneTotal();
+        rs.forEach(r -> {
+            categoryOneTotal.setCategoryOneId(r.getInt("cat_one_id"));
+            categoryOneTotal.setTotal(r.getInt("total"));
+        });
+        return categoryOneTotal;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CategoryTwoTotal findCategoryTwoById(Detail detail) {
+        String query = "SELECT * FROM write_test.cat_two_sum WHERE cat_two_id = " + detail.getCategoryTwoId() + ";";
+        ResultSet rs = session.execute(query);
+        CategoryTwoTotal categoryTwoTotal = new CategoryTwoTotal();
+        rs.forEach(r -> {
+            categoryTwoTotal.setCategoryTwoId(r.getInt("cat_two_id"));
+            categoryTwoTotal.setTotal(r.getInt("total"));
+        });
+        return categoryTwoTotal;
     }
 }
