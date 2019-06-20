@@ -1,5 +1,7 @@
 package cassandra.repository;
 
+import com.datastax.driver.core.BatchStatement;
+import com.datastax.driver.core.Statement;
 import model.ApplicationPriceRating;
 import model.CategoryOneTotal;
 import model.CategoryTwoTotal;
@@ -23,6 +25,21 @@ public interface CassandraRepository {
      * @param detail Detail that will be inserted.
      */
     void insertDetail(Detail detail);
+
+    /**
+     * Given a detail, return it as a Cassandra statement.
+     *
+     * @param detail New detail that will be converted to an statement.
+     * @return Cassandra statement.
+     */
+    Statement getDetailAsStatement(Detail detail);
+
+    /**
+     * Execute a Cassandra batch statement.
+     *
+     * @param batchStatement Batch statement that will be executed.
+     */
+    void executeBatch(BatchStatement batchStatement);
 
     /**
      * Insert a new category one detail total.

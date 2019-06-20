@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+src/main/resources/.DS_Store
+target/
+/src/main/java/Main.java

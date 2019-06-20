@@ -1,7 +1,10 @@
 package cassandra.repository.implementation;
 
 import cassandra.repository.CassandraRepository;
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.SimpleStatement;
+import com.datastax.driver.core.Statement;
 import model.ApplicationPriceRating;
 import model.CategoryOneTotal;
 import model.CategoryTwoTotal;
@@ -44,7 +47,7 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
      */
     public void insertCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
         String query = "INSERT INTO write_test.cat_one_sum (cat_one_id, total) " +
-                "VALUES ( "+ categoryOneTotal.getCategoryOneId() +","+ categoryOneTotal.getTotal() +");";
+                "VALUES ( " + categoryOneTotal.getCategoryOneId() + "," + categoryOneTotal.getTotal() + ");";
         session.execute(query);
     }
 
@@ -53,7 +56,7 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
      */
     public void insertCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
         String query = "INSERT INTO write_test.cat_two_sum (cat_one_id, total) " +
-                "VALUES ( "+ categoryTwoTotal.getCategoryTwoId() +","+ categoryTwoTotal.getTotal() +");";
+                "VALUES ( " + categoryTwoTotal.getCategoryTwoId() + "," + categoryTwoTotal.getTotal() + ");";
         session.execute(query);
     }
 
@@ -83,17 +86,32 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
      * {@inheritDoc}
      */
     public void insertApplicationPriceRating(ApplicationPriceRating applicationPriceRating) {
-        String query;
-        try {
-            query =
-                    "INSERT INTO original.application_price_rating " +
-                            "(name, type, price, rating, installs, review_count) " +
-                            "VALUES ('" + applicationPriceRating.getName() + "', '" + applicationPriceRating.getType()
-                            + "', " + applicationPriceRating.getPrice() + ", " + applicationPriceRating.getRating() +
-                            ", '" + applicationPriceRating.getInstalls() + "', " + applicationPriceRating.getReviewCount() + ");";
-            session.execute(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String query =
+                "INSERT INTO original.application_price_rating " +
+                        "(name, type, price, rating, installs, review_count) " +
+                        "VALUES ('" + applicationPriceRating.getName() + "', '" + applicationPriceRating.getType()
+                        + "', " + applicationPriceRating.getPrice() + ", " + applicationPriceRating.getRating() +
+                        ", '" + applicationPriceRating.getInstalls() + "', " + applicationPriceRating.getReviewCount() + ");";
+        session.execute(query);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Statement getDetailAsStatement(Detail detail) {
+        String query = "INSERT INTO write_test.details " + "(id, cat_one, cat_two, value) " +
+                "VALUES ('" + detail.getId() +
+                "', " + detail.getCategoryOneId() + ", " + detail.getCategoryTwoId() + ", " + detail.getValue() + ");";
+        Statement statement = new SimpleStatement(query);
+        return statement;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void executeBatch(BatchStatement batchStatement) {
+        this.session.execute(batchStatement);
     }
 }

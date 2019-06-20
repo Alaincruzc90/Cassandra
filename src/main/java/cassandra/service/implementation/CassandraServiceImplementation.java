@@ -4,7 +4,10 @@ import cassandra.connector.CassandraConnector;
 import cassandra.repository.CassandraRepository;
 import cassandra.repository.implementation.CassandraRepositoryImplementation;
 import cassandra.service.CassandraService;
+import com.datastax.driver.core.BatchStatement;
+import com.datastax.driver.core.Statement;
 import model.ApplicationPriceRating;
+import model.Detail;
 
 import java.util.ResourceBundle;
 
@@ -34,6 +37,31 @@ public class CassandraServiceImplementation implements CassandraService {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public void insertDetail(Detail detail) {
+        this.cassandraRepository.insertDetail(detail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Statement getDetailAsStatement(Detail detail) {
+        return this.cassandraRepository.getDetailAsStatement(detail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void executeBatch(BatchStatement batchStatement) {
+        this.cassandraRepository.executeBatch(batchStatement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void insertApplicationPriceRating(ApplicationPriceRating applicationPriceRating) {
         this.cassandraRepository.insertApplicationPriceRating(applicationPriceRating);
     }
@@ -41,6 +69,7 @@ public class CassandraServiceImplementation implements CassandraService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void closeConnection() {
         try {
             cassandraConnector.close();
