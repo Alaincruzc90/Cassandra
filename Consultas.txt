@@ -107,9 +107,28 @@ VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X PRO', 69
 
 UPDATE basic.products SET name = 'OMEGA X PRO RETRO' WHERE code = '1LA2000-1' AND brand = 'Le Coq Sportif' AND gender = 'Hombre';
 
--- Seleccionar una serie de productos con ciertas restricciones. Sin el ALLOW FILTERING, no se puede filtrar nada fuera de la PARTITION KEY.
+- Seleccionar una serie de productos con ciertas restricciones. Sin el ALLOW FILTERING, no se puede filtrar nada fuera de la PARTITION KEY.
 
 SELECT * FROM basic.products WHERE gender = 'Hombre' AND brand = 'Le Coq Sportif' ALLOW FILTERING;
+
+- Crear una una serie de declaraciones que se van a correr atómicamente, utilizando el commando de BEGIN BATCH [...] APPLY BATCH
+
+BEGIN BATCH
+INSERT INTO basic.products (code, brand, gender, entry_date, name, price, reference)
+VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X', 69850, '1920027');
+INSERT INTO basic.products (code, brand, gender, entry_date, name, price, reference)
+VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X PRO', 69850, '1920027');
+INSERT INTO basic.products (code, brand, gender, entry_date, name, price, reference)
+VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X PRO RETRO PRO', 69850, '1920027');
+APPLY BATCH;
+
+- Seleccionar valores distintos de una llave de partición.
+
+SELECT DISTINCT os_version FROM original.application_version_feeling;
+
+- Contar la cantidad de filas que tiene una tabla.
+
+SELECT COUNT(*) FROM write_test.details;
 
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
