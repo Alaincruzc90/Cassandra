@@ -76,4 +76,20 @@ public interface CassandraRepository {
      */
     void insertApplicationPriceRating(ApplicationPriceRating applicationPriceRating);
 
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryOneTotal findCategoryOneById(Detail detail);
+
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryTwoTotal findCategoryTwoById(Detail detail);
+
 }

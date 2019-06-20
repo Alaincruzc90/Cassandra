@@ -6,6 +6,8 @@ import cassandra.service.CassandraService;
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Statement;
 import model.ApplicationPriceRating;
+import model.CategoryOneTotal;
+import model.CategoryTwoTotal;
 import model.Detail;
 
 import java.util.ResourceBundle;
@@ -63,6 +65,54 @@ public class CassandraServiceImplementation implements CassandraService {
     @Override
     public void insertApplicationPriceRating(ApplicationPriceRating applicationPriceRating) {
         this.cassandraRepository.insertApplicationPriceRating(applicationPriceRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
+        this.cassandraRepository.insertCategoryOneTotal(categoryOneTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
+        this.cassandraRepository.insertCategoryTwoTotal(categoryTwoTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
+        this.cassandraRepository.updateCategoryOneTotal(categoryOneTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
+        this.cassandraRepository.updateCategoryTwoTotal(categoryTwoTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CategoryOneTotal findCategoryOneById(Detail detail) {
+        return this.cassandraRepository.findCategoryOneById(detail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CategoryTwoTotal findCategoryTwoById(Detail detail) {
+        return this.cassandraRepository.findCategoryTwoById(detail);
     }
 
     /**
