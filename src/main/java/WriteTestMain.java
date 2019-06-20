@@ -1,13 +1,12 @@
-import dataprocessing.DataProcessing;
 import writetest.WriteTest;
 
-public class Main {
+public class WriteTestMain {
 
     public static void main(String[] args) {
 
-        DataProcessing dataProcessing = new DataProcessing();
+        WriteTest writeTest = new WriteTest(1000);
         try {
-            dataProcessing.insertData();
+            writeTest.writeOnlyDetails(50000, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
