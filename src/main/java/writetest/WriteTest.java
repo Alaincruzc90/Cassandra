@@ -2,15 +2,11 @@ package writetest;
 
 import cassandra.service.implementation.CassandraServiceImplementation;
 import com.datastax.driver.core.BatchStatement;
-import com.datastax.driver.core.Statement;
 import model.Detail;
 import util.IdRandomize;
-import util.Request;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class WriteTest {
 
@@ -22,7 +18,7 @@ public class WriteTest {
         this.maxThreads = maxThreads;
     }
 
-    public void writeOnlyDetails(int rows, boolean doBatch) throws InterruptedException {
+    public void writeOnlyDetails(int rows, boolean doBatch) {
 
         // Save the references to all our threads.
         ArrayList<Thread> threads = new ArrayList<>();
@@ -35,6 +31,7 @@ public class WriteTest {
         int maxRows = (int) (rows / (double) this.maxThreads);
 
         for (int j = 0; j < maxThreads; j++) {
+
             // Set each thread process and add it to our thread list.
             Thread t = new Thread(() -> {
                 if (doBatch) {
@@ -101,11 +98,7 @@ public class WriteTest {
         for (int i = 0; i < rows; i++) {
 
             // Create the detail.
-            String id = IdRandomize.getRandomId(15);
-            int categoryOne = (int) (Math.random() * 20);
-            int categoryTwo = (int) (Math.random() * 100);
-            int value = (int) (Math.random() * 35000);
-            Detail detail = new Detail(id, categoryOne, categoryTwo, value);
+            Detail detail = this.createNewDetail();
 
             // Insert the new statement from the new detail.
             batchStatement.add(cassandraServiceImplementation.getDetailAsStatement(detail));
@@ -114,6 +107,19 @@ public class WriteTest {
         // Execute the batch.
         cassandraServiceImplementation.executeBatch(batchStatement);
 
+    }
+
+    /**
+     * Create a new random detail.
+     *
+     * @return New random detail.
+     */
+    private Detail createNewDetail() {
+        String id = IdRandomize.getRandomId(15);
+        int categoryOne = (int) (Math.random() * 20);
+        int categoryTwo = (int) (Math.random() * 100);
+        int value = (int) (Math.random() * 35000);
+        return new Detail(id, categoryOne, categoryTwo, value);
     }
 
 }
