@@ -260,4 +260,8 @@ SELECT * FROM original.application_category_rating GROUP BY category ALLOW FILTE
 
 -- Se particiona por categoría para paralelizar el conteo de aplicaciones.
 
+SELECT category, COUNT(*) FROM original.application_category_rating GROUP BY category ALLOW FILTERING;
+
 -- Se particiona por nombre y se ordena de mayor a menor sentimiento y calificación.
+
+SELECT * FROM original.application_feeling_rating GROUP BY name ALLOW FILTERING;

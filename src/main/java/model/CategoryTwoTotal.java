@@ -5,6 +5,8 @@ public class CategoryTwoTotal {
     private Integer categoryTwoId;
     private Integer total;
 
+    public CategoryTwoTotal() {}
+
     public CategoryTwoTotal(Integer categoryTwoId, Integer total) {
         this.categoryTwoId = categoryTwoId;
         this.total = total;

@@ -128,5 +128,21 @@ public interface CassandraRepository {
      * @param applicationFeelingRating New ApplicationFeelingRating that will be inserted.
      */
     void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating );
+    
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryOneTotal findCategoryOneById(Detail detail);
+
+    /**
+     * Given an Detail find it's current category one total.
+     *
+     * @param detail Detail from which we want to read it's category one total.
+     * @return CategoryOneTotal.
+     */
+    CategoryTwoTotal findCategoryTwoById(Detail detail);
 
 }
