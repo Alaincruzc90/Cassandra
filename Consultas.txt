@@ -229,4 +229,35 @@ CREATE TABLE original.application_category_rating_three (
                                  
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
+-- Se particiona por nombre y tipo para agilizar el cálculo de popularidad de las aplicaciones gratuitas.
+-- Luego se ordena de menor a mayor precio y de mayor a menor popularidad.
 
+SELECT * FROM original.application_price_rating GROUP BY name, type ALLOW FILTERING;
+
+-- Se particiona por nombre y se ordena de mayor a menor peso y popularidad.
+
+SELECT * FROM original.application_size_rating GROUP BY name ALLOW FILTERING;
+
+-- Se particiona según la clasificación por edades para paralelizar el cálculo de su popularidad.
+
+SELECT * FROM original.application_age_rating GROUP BY age_group ALLOW FILTERING;
+
+-- Se particiona según el género para paralelizar el cálculo de su popularidad.
+
+SELECT * FROM original.application_genre_rating GROUP BY genre ALLOW FILTERING;
+
+-- Se particiona por nombre y se ordena de mayor a menor fecha y popularidad.
+
+SELECT * FROM original.application_date_rating GROUP BY NAME ALLOW FILTERING;
+
+-- Se particiona por versión de Android para paralelizar cálculo de popularidad y se ordena de mayor a menor sentimiento y popularidad.
+
+SELECT * FROM original.application_version_feeling GROUP BY os_version ALLOW FILTERING;
+
+-- Se particiona según la categoría para paralelizar el cálculo de su popularidad.
+
+SELECT * FROM original.application_category_rating GROUP BY category ALLOW FILTERING;
+
+-- Se particiona por categoría para paralelizar el conteo de aplicaciones.
+
+-- Se particiona por nombre y se ordena de mayor a menor sentimiento y calificación.
