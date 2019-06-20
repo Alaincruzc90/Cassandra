@@ -62,6 +62,23 @@ DROP TABLE basic.products;
 
 TRUNCATE basic.products;
 
+- Alterar una tabla. Existen los siguientes casos:
+	i) Añadir columna.
+ALTER TABLE basic.products  
+ADD tax INT;
+
+	ii)	Alterar el tipo de una columna
+ALTER TABLE basic.products 
+ALTER tax TYPE FLOAT;
+
+	iii) Renombrar una columna
+ALTER TABLE basic.products 
+RENAME tax TO income_tax;
+	
+	iv) Eliminar columna
+ALTER TABLE basic.products
+DROP income_tax;
+
 - Selecionar todo de una tabla.
 
 SELECT * FROM basic.products;
@@ -114,9 +131,9 @@ CREATE TABLE original.application_price_rating (
     PRIMARY KEY ((name, type), price, rating, installs, review_count)
 ) WITH CLUSTERING ORDER BY (price DESC, rating ASC, installs ASC, review_count ASC);
 
-CREATE TABLE original.application_weight_rating (
+CREATE TABLE original.application_size_rating (
     name            TEXT,
-    size            TEXT,
+    size            FLOAT,
     rating          FLOAT,
     installs        TEXT,
     review_count    INT,
@@ -131,14 +148,14 @@ CREATE TABLE original.application_age_rating (
     PRIMARY KEY (age_group, rating, installs, review_count)
 ) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, review_count ASC);
 
-CREATE TABLE original.application_gender_rating (
-    gender          TEXT,
+CREATE TABLE original.application_genre_rating (
+    genre          TEXT,
     rating          FLOAT,
     installs        TEXT,
     review_count    INT,
     category        TEXT,
     name            TEXT,
-    PRIMARY KEY (gender, rating, installs, review_count)
+    PRIMARY KEY (genre, rating, installs, review_count)
 ) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, review_count ASC);
 
 CREATE TABLE original.application_date_rating (

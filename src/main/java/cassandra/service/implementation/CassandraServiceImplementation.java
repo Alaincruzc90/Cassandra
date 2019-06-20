@@ -6,8 +6,7 @@ import cassandra.repository.implementation.CassandraRepositoryImplementation;
 import cassandra.service.CassandraService;
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Statement;
-import model.ApplicationPriceRating;
-import model.Detail;
+import model.*;
 
 import java.util.ResourceBundle;
 
@@ -64,6 +63,43 @@ public class CassandraServiceImplementation implements CassandraService {
     @Override
     public void insertApplicationPriceRating(ApplicationPriceRating applicationPriceRating) {
         this.cassandraRepository.insertApplicationPriceRating(applicationPriceRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationSizeRating(ApplicationSizeRating applicationSizeRating) {
+        this.cassandraRepository.insertApplicationSizeRating(applicationSizeRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationAgeRating(ApplicationAgeRating applicationAgeRating) {
+        this.cassandraRepository.insertApplicationAgeRating(applicationAgeRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationGenreRating(ApplicationGenreRating applicationGenreRating) {
+        this.cassandraRepository.insertApplicationGenreRating(applicationGenreRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationDateRating(ApplicationDateRating applicationDateRating) {
+        this.cassandraRepository.insertApplicationDateRating(applicationDateRating);
+    }
+
+    @Override
+    public void insertApplicationVersionFeeling(ApplicationVersionFeeling applicationVersionFeeling) {
+        this.cassandraRepository.insertApplicationVersionFeeling(applicationVersionFeeling);
     }
 
     /**
