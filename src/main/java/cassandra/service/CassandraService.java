@@ -49,6 +49,27 @@ public interface CassandraService {
     void insertApplicationVersionFeeling(ApplicationVersionFeeling applicationVersionFeeling);
 
     /**
+     * Insert a new ApplicationCategoryRating.
+     *
+     * @param applicationCategoryRating New ApplicationCategoryRating that will be inserted.
+     */
+    void insertApplicationCategoryRating(ApplicationCategoryRating applicationCategoryRating);
+
+    /**
+     * Insert a new ApplicationCategory.
+     *
+     * @param applicationCategory New ApplicationCategory that will be inserted.
+     */
+    void insertApplicationCategory(ApplicationCategory applicationCategory);
+
+    /**
+     * Insert a new ApplicationFeelingRating.
+     *
+     * @param applicationFeelingRating New ApplicationFeelingRating that will be inserted.
+     */
+    void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating);
+
+    /**
      * Close our connection with Cassandra.
      */
     void closeConnection();

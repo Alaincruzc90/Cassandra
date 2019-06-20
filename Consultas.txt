@@ -171,7 +171,7 @@ CREATE TABLE original.application_version_feeling (
     os_version      TEXT,
     rating          FLOAT,
     installs        TEXT,
-    feeling         TEXT,
+    feeling         FLOAT,
     review_count    INT,
     name            TEXT,
     PRIMARY KEY (os_version, rating, installs, feeling)

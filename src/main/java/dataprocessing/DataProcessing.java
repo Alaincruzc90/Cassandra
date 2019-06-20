@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -87,8 +88,16 @@ public class DataProcessing {
             String lastUpdate = Objects.toString(values[10], "");
             if(!lastUpdate.equals("")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yy", Locale.ENGLISH);
-                LocalDate dateTime = LocalDate.parse(lastUpdate, formatter);
-                lastUpdate = dateTime.toString();
+                LocalDate dateTime;
+                try {
+                    // Attempt to parse the date and then convert it to string
+                    dateTime = LocalDate.parse(lastUpdate, formatter);
+                    lastUpdate = dateTime.toString();
+                } catch(DateTimeParseException e) {
+                    // If the date was incorrect, insert an empty string
+                    lastUpdate = "";
+                }
+
             }
 
             String currentVersion = Objects.toString(values[11], "");
@@ -99,17 +108,21 @@ public class DataProcessing {
             //ApplicationSizeRating applicationSizeRating = new ApplicationSizeRating(name, size, rating, reviewCount, installs);
             //ApplicationAgeRating applicationAgeRating = new ApplicationAgeRating(contentRating, rating, reviewCount, installs);
             //ApplicationGenreRating applicationGenreRating = new ApplicationGenreRating(genre, rating, reviewCount, installs, category, name);
-            ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
+            //ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
+            //ApplicationCategoryRating applicationCategoryRating = new ApplicationCategoryRating(category, rating, reviewCount, installs);
+            //ApplicationCategory applicationCategory = new ApplicationCategory(category, name);
 
             // Insert the new data.
             //cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
             //cassandraServiceImplementation.insertApplicationSizeRating(applicationSizeRating);
             //cassandraServiceImplementation.insertApplicationAgeRating(applicationAgeRating);
             //cassandraServiceImplementation.insertApplicationGenreRating(applicationGenreRating);
-            cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
+            //cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
+            //cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
+            //cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
 
             // Store necessary data for when we parse the second csv
-            tempApplicationData.put(name, new TempApplicationData(androidVersion, rating, reviewCount, installs));
+            tempApplicationData.put(name, new TempApplicationData(category, androidVersion, rating, reviewCount, installs));
         }
 
         // Parse the second csv
@@ -146,12 +159,17 @@ public class DataProcessing {
             TempApplicationData applicationData = tempApplicationData.get(name);
 
             // Create the needed models
-            ApplicationVersionFeeling applicationVersionFeeling = new ApplicationVersionFeeling(
-                    applicationData.getAndroidVersion(), sentimentPolarity, applicationData.getRating(),
-                    applicationData.getReviewCount(), applicationData.getInstalls(), name);
+            //ApplicationVersionFeeling applicationVersionFeeling = new ApplicationVersionFeeling(
+             //       applicationData.getAndroidVersion(), sentimentPolarity, applicationData.getRating(),
+              //      applicationData.getReviewCount(), applicationData.getInstalls(), name);
+            ApplicationFeelingRating applicationFeelingRating = new ApplicationFeelingRating(
+                    name, sentimentString, applicationData.getRating(),
+                    applicationData.getReviewCount());
+
 
             // Insert the data
-            cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
+            //cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
+            cassandraServiceImplementation.insertApplicationFeelingRating(applicationFeelingRating);
         }
 
         cassandraServiceImplementation.closeConnection();
@@ -159,16 +177,27 @@ public class DataProcessing {
 }
 
 class TempApplicationData {
+
+    private String category;
     private String androidVersion;
     private Float rating;
     private Integer reviewCount;
     private String installs;
 
-    public TempApplicationData(String androidVersion, Float rating, Integer reviewCount, String installs) {
+    public TempApplicationData(String category, String androidVersion, Float rating, Integer reviewCount, String installs) {
+        this.category = category;
         this.androidVersion = androidVersion;
         this.rating = rating;
         this.reviewCount = reviewCount;
         this.installs = installs;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getAndroidVersion() {

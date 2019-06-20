@@ -96,9 +96,36 @@ public class CassandraServiceImplementation implements CassandraService {
         this.cassandraRepository.insertApplicationDateRating(applicationDateRating);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void insertApplicationVersionFeeling(ApplicationVersionFeeling applicationVersionFeeling) {
         this.cassandraRepository.insertApplicationVersionFeeling(applicationVersionFeeling);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationCategoryRating(ApplicationCategoryRating applicationCategoryRating) {
+        this.cassandraRepository.insertApplicationCategoryRating(applicationCategoryRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationCategory(ApplicationCategory applicationCategory) {
+        this.cassandraRepository.insertApplicationCategory(applicationCategory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating) {
+        this.cassandraRepository.insertApplicationFeelingRating(applicationFeelingRating);
     }
 
     /**

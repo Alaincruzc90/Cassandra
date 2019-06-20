@@ -161,6 +161,43 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
                         "VALUES ('" + applicationVersionFeeling.getName() + "', '"+applicationVersionFeeling.getAndroidVersion()+"', "
                         + applicationVersionFeeling.getRating() + ", '" + applicationVersionFeeling.getInstalls() +
                         "', " + applicationVersionFeeling.getReviewCount() + ", "+applicationVersionFeeling.getFeeling()+");";
+        session.execute(query);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationCategoryRating(ApplicationCategoryRating applicationCategoryRating) {
+        String query =
+                "INSERT INTO original.application_category_rating " +
+                        "(category, rating, installs, review_count) " +
+                        "VALUES ('" + applicationCategoryRating.getCategory() + "', "
+                        + applicationCategoryRating.getRating() + ", '" + applicationCategoryRating.getInstalls() +
+                        "', " + applicationCategoryRating.getReviewCount() +");";
+        session.execute(query);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationCategory(ApplicationCategory applicationCategory) {
+        String query =
+                "INSERT INTO original.application_category " +
+                        "(category, name) " +
+                        "VALUES ('" + applicationCategory.getCategory() + "', '" + applicationCategory.getName() +
+                        "');";
+        session.execute(query);
+    }
+
+    @Override
+    public void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating) {
+        String query =
+                "INSERT INTO original.application_feeling_rating " +
+                        "(name, feeling, rating, review_count) " +
+                        "VALUES ('" + applicationFeelingRating.getName() + "', '"+applicationFeelingRating.getFeeling()+"', "
+                        + applicationFeelingRating.getRating() + ", " + applicationFeelingRating.getReviewCount() +");";
         System.out.println(query);
         session.execute(query);
     }
