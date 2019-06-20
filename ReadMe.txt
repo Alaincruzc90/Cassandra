@@ -214,4 +214,8 @@ Las columnas de clustering determinan el orden de los datos en particiones, tien
 Dato 3. Uso de ORDER BY.
 Cassandra tiene la limitación de que solo puede usar la clausula ORDER BY sobre la llave de partición, pero dado que las tablas ya están ordenadas por el valor de la llave, realmente el unico uso que tiene esta clausula es revertir el orden en que se presentan los datos.
 
-Dato 4.
+Dato 4. Uso de GROUP BY.
+Similar al uso de ORDER BY, GROUP BY solo se puede utilizar sobre la llave de partición.
+
+Dato 5. Soporte de clausulas OFFSET
+Cassandra no soporta clausulas offset.
