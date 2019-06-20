@@ -185,3 +185,19 @@ AND SUPERUSER=false;
 Pueden revisar el código utilizado para la carga de datos y pruebas de escritura en el siguiente repositorio.
 
 https://github.com/Alaincruzc90/Cassandra
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ ___                  _ _           _
+| _ \___ _ __  ___ __(_) |_ ___ _ _(_)___
+|   / -_) '_ \/ _ (_-< |  _/ _ \ '_| / _ \
+|_|_\___| .__/\___/__/_|\__\___/_| |_\___/
+        |_|
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+El repositorio se puede encontrar en la siguiente dirección y utilizando los siguientes credenciales.
+
+Host: ec2-13-59-226-165.us-east-2.compute.amazonaws.com
+User: cassandra_user
+Password: triton2019exito
