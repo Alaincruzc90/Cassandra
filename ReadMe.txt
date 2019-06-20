@@ -172,3 +172,16 @@ ALTER ROLE cassandra WITH PASSWORD='contraseña-diferente'
 AND SUPERUSER=false;
 
 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-
+  ___         _ _
+ / __|___  __| (_)__ _ ___
+| (__/ _ \/ _` | / _` / _ \
+ \___\___/\__,_|_\__, \___/
+                 |___/
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
+Pueden revisar el código utilizado para la carga de datos y pruebas de escritura en el siguiente repositorio.
+
+https://github.com/Alaincruzc90/Cassandra
