@@ -104,22 +104,22 @@ public class DataProcessing {
             String androidVersion = Objects.toString(values[12], "");
 
             // Now, create the needed models.
-            //ApplicationPriceRating applicationPriceRating = new ApplicationPriceRating(name, type, price, rating, installs, reviewCount);
-            //ApplicationSizeRating applicationSizeRating = new ApplicationSizeRating(name, size, rating, reviewCount, installs);
-            //ApplicationAgeRating applicationAgeRating = new ApplicationAgeRating(contentRating, rating, reviewCount, installs);
-            //ApplicationGenreRating applicationGenreRating = new ApplicationGenreRating(genre, rating, reviewCount, installs, category, name);
-            //ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
-            //ApplicationCategoryRating applicationCategoryRating = new ApplicationCategoryRating(category, rating, reviewCount, installs);
-            //ApplicationCategory applicationCategory = new ApplicationCategory(category, name);
+            ApplicationPriceRating applicationPriceRating = new ApplicationPriceRating(name, type, price, rating, installs, reviewCount);
+            ApplicationSizeRating applicationSizeRating = new ApplicationSizeRating(name, size, rating, reviewCount, installs);
+            ApplicationAgeRating applicationAgeRating = new ApplicationAgeRating(contentRating, rating, reviewCount, installs);
+            ApplicationGenreRating applicationGenreRating = new ApplicationGenreRating(genre, rating, reviewCount, installs, category, name);
+            ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
+            ApplicationCategoryRating applicationCategoryRating = new ApplicationCategoryRating(category, rating, reviewCount, installs);
+            ApplicationCategory applicationCategory = new ApplicationCategory(category, name);
 
             // Insert the new data.
-            //cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
-            //cassandraServiceImplementation.insertApplicationSizeRating(applicationSizeRating);
-            //cassandraServiceImplementation.insertApplicationAgeRating(applicationAgeRating);
-            //cassandraServiceImplementation.insertApplicationGenreRating(applicationGenreRating);
-            //cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
-            //cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
-            //cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
+            cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
+            cassandraServiceImplementation.insertApplicationSizeRating(applicationSizeRating);
+            cassandraServiceImplementation.insertApplicationAgeRating(applicationAgeRating);
+            cassandraServiceImplementation.insertApplicationGenreRating(applicationGenreRating);
+            cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
+            cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
+            cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
 
             // Store necessary data for when we parse the second csv
             tempApplicationData.put(name, new TempApplicationData(category, androidVersion, rating, reviewCount, installs));
@@ -159,16 +159,16 @@ public class DataProcessing {
             TempApplicationData applicationData = tempApplicationData.get(name);
 
             // Create the needed models
-            //ApplicationVersionFeeling applicationVersionFeeling = new ApplicationVersionFeeling(
-             //       applicationData.getAndroidVersion(), sentimentPolarity, applicationData.getRating(),
-              //      applicationData.getReviewCount(), applicationData.getInstalls(), name);
+            ApplicationVersionFeeling applicationVersionFeeling = new ApplicationVersionFeeling(
+                    applicationData.getAndroidVersion(), sentimentPolarity, applicationData.getRating(),
+                    applicationData.getReviewCount(), applicationData.getInstalls(), name);
             ApplicationFeelingRating applicationFeelingRating = new ApplicationFeelingRating(
                     name, sentimentString, applicationData.getRating(),
                     applicationData.getReviewCount());
 
 
             // Insert the data
-            //cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
+            cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
             cassandraServiceImplementation.insertApplicationFeelingRating(applicationFeelingRating);
         }
 

@@ -198,7 +198,6 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
                         "(name, feeling, rating, review_count) " +
                         "VALUES ('" + applicationFeelingRating.getName() + "', '"+applicationFeelingRating.getFeeling()+"', "
                         + applicationFeelingRating.getRating() + ", " + applicationFeelingRating.getReviewCount() +");";
-        System.out.println(query);
         session.execute(query);
     }
 
