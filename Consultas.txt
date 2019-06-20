@@ -1,0 +1,215 @@
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ ___          _                 ___ ___ _   _ ___  
+| _ ) __ _ __(_)__ ___   ___   / __| _ \ | | |   \ 
+| _ \/ _` (_-< / _/ _ \ |___| | (__|   / |_| | |) |
+|___/\__,_/__/_\__\___/        \___|_|_\\___/|___/ 
+                                                   
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+- Crear un KEYSPACE. Se utiliza una replicación con un factor de uno, el cual nos dice que solo existe una replica. Por lo general, lo recomendado es usar dos, pues evita fallos.
+
+CREATE KEYSPACE basic
+  WITH REPLICATION = {
+   'class' : 'NetworkTopologyStrategy',
+   'us-east-2' : 1
+  };
+
+
+- Crear una tabla. En este caso colocamos primero el nombre del keyspace donde queremos crear la tabla y luego el nombre de la tabla. 
+
+CREATE TABLE basic.products (
+    code VARCHAR,
+    reference VARCHAR,
+    name VARCHAR,
+    brand VARCHAR,
+    entry_date TIMESTAMP,
+    price FLOAT,
+    gender VARCHAR,
+    PRIMARY KEY (code, brand, gender)
+)
+
+- Tipos posibles de datos en Cassandra.
+
+*************************************************************************************************
+Data Type		Constants		Description
+ascii			strings			Represents ASCII character string
+bigint			bigint			Represents 64-bit signed long
+blob			blobs			Represents arbitrary bytes
+Boolean			booleans		Represents true or false
+counter			integers		Represents counter column
+decimal			integers, floats	Represents variable-precision decimal
+double			integers		Represents 64-bit IEEE-754 floating point
+float			integers, floats	Represents 32-bit IEEE-754 floating point
+inet			strings			Represents an IP address, IPv4 or IPv6
+int			integers		Represents 32-bit signed int
+text			strings			Represents UTF8 encoded string
+timestamp		integers, strings	Represents a timestamp
+timeuuid		uuids			Represents type 1 UUID
+uuid			uuids			Represents type 1 or type 4 UUID
+varchar			strings			Represents uTF8 encoded string
+varint			integers		Represents arbitrary-precision integer
+*************************************************************************************************
+
+- Copia de un archivo csv a una tabla. HEADER=TRUE se usar cuando nuestros datos tienen encabezado, en caso contrario se pone false. DELIMITER sirve para definir por lo cual los datos están separados.
+
+COPY basic.products (code, reference, name, brand, entry_date, price, gender) FROM '/home/ubuntu/datos-productos.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+
+- Eliminar una tabla. En este caso eliminamos una tabla del keyspace basic llamada products.
+
+DROP TABLE basic.products;
+
+- Borrar todo de una tabla.
+
+TRUNCATE basic.products;
+
+- Selecionar todo de una tabla.
+
+SELECT * FROM basic.products;
+
+- Borrar un dato por algún atributo.
+
+DELETE from basic.products where code = '3SZ16-1';
+
+- Insertar un nuevo dato.
+
+INSERT INTO basic.products (code, brand, gender, entry_date, name, price, reference)
+VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X', 69850, '1920027');
+
+- Selecionar el dato recien agregado.
+
+SELECT * FROM basic.products WHERE code = '1LA2000-1';
+
+- Modificar un dato dado un atributo. No funciona, pues para poder hacer una modificación ocupamos la llave primaria completa.
+
+UPDATE basic.products SET name = 'OMEGA X PRO' WHERE code = '1LA2000-1';
+
+- Entonces, la alternativa es sobre escribir el dato o utilizar el update con where con toda la llave.
+
+INSERT INTO basic.products (code, brand, gender, entry_date, name, price, reference)
+VALUES ('1LA2000-1', 'Le Coq Sportif', 'Hombre', '2019-06-20', 'OMEGA X PRO', 69850, '1920027');
+
+UPDATE basic.products SET name = 'OMEGA X PRO RETRO' WHERE code = '1LA2000-1' AND brand = 'Le Coq Sportif' AND gender = 'Hombre';
+
+-- Seleccionar una serie de productos con ciertas restricciones. Sin el ALLOW FILTERING, no se puede filtrar nada fuera de la PARTITION KEY.
+
+SELECT * FROM basic.products WHERE gender = 'Hombre' AND brand = 'Le Coq Sportif' ALLOW FILTERING;
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+  ___                 _          
+ / __|_ _ ___ __ _ __(_)___ _ _  
+| (__| '_/ -_) _` / _| / _ \ ' \ 
+ \___|_| \___\__,_\__|_\___/_||_|
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
+CREATE TABLE original.application_price_rating (
+    name            TEXT,
+    type            TEXT,
+    price           DOUBLE,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    PRIMARY KEY ((name, type), price, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (price DESC, rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_weight_rating (
+    name            TEXT,
+    size            TEXT,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    PRIMARY KEY (name, size, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (size ASC, rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_age_rating (
+    age_group       TEXT,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    PRIMARY KEY (age_group, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_gender_rating (
+    gender          TEXT,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    category        TEXT,
+    name            TEXT,
+    PRIMARY KEY (gender, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_date_rating (
+    name            TEXT,
+    last_update     DATE,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    PRIMARY KEY (name, last_update, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (last_update ASC, rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_version_feeling (
+    os_version      TEXT,
+    rating          FLOAT,
+    installs        TEXT,
+    feeling         TEXT,
+    review_count    INT,
+    name            TEXT,
+    PRIMARY KEY (os_version, rating, installs, feeling)
+) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, feeling ASC);
+
+CREATE TABLE original.application_category_rating (
+    category        TEXT,
+    rating          FLOAT,
+    installs        TEXT,
+    review_count    INT,
+    PRIMARY KEY (category, rating, installs, review_count)
+) WITH CLUSTERING ORDER BY (rating ASC, installs ASC, review_count ASC);
+
+CREATE TABLE original.application_category (
+    category        TEXT,
+    name            TEXT,
+    PRIMARY KEY (category, name)
+) WITH CLUSTERING ORDER BY (name ASC);
+
+CREATE TABLE original.application_feeling_rating (
+    name            TEXT,
+    feeling         TEXT,
+    rating          FLOAT,
+    review_count    INT,
+    PRIMARY KEY (name, feeling, rating)
+) WITH CLUSTERING ORDER BY (feeling ASC, rating ASC);
+
+CREATE TABLE original.application_category_rating_one (
+    name            TEXT,
+    installs        TEXT,
+    category        TEXT,
+    PRIMARY KEY (name, installs)
+) WITH CLUSTERING ORDER BY (installs ASC);
+
+CREATE TABLE original.application_category_rating_two (
+    category        TEXT,
+    installs        TEXT,
+    name            TEXT,
+    PRIMARY KEY (category, installs)
+) WITH CLUSTERING ORDER BY (installs ASC);
+
+CREATE TABLE original.application_category_rating_three (
+    name            TEXT,
+    category        TEXT,
+    installs        TEXT,
+    PRIMARY KEY ( (name, category), installs)
+) WITH CLUSTERING ORDER BY (installs ASC);
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+  ___                  _ _             ___                             _       
+ / __|___ _ _  ____  _| | |_ __ _ ___ |   \ ___  __ _  _ _ __  ___ _ _| |_ ___ 
+| (__/ _ \ ' \(_-< || | |  _/ _` (_-< | |) / _ \/ _| || | '  \/ -_) ' \  _/ _ \
+ \___\___/_||_/__/\_,_|_|\__\__,_/__/ |___/\___/\__|\_,_|_|_|_\___|_||_\__\___/
+                                 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
