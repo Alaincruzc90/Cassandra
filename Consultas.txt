@@ -235,3 +235,5 @@ SELECT * FROM original.application_price_rating GROUP BY name, type ALLOW FILTER
 SELECT * FROM original.application_size_rating GROUP BY name ALLOW FILTERING;
 
 SELECT * FROM original.application_age_rating GROUP BY age_group ALLOW FILTERING;
+
+SELECT * FROM original.application_genre_rating GROUP BY genre ALLOW FILTERING;
