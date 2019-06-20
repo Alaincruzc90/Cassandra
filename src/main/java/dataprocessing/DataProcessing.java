@@ -7,6 +7,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,11 +31,11 @@ public class DataProcessing {
         System.out.println("Starting execution at: " + Calendar.getInstance().getTime());
 
         // First read from the required data.
-        File googlePlayStoreData;
-        File googlePlayStoreReviewData;
+        BufferedReader googlePlayStoreData;
+        BufferedReader googlePlayStoreReviewData;
         try {
-            googlePlayStoreData = new File(getClass().getClassLoader().getResource("data/googleplaystore.csv").getFile());
-            googlePlayStoreReviewData = new File(getClass().getClassLoader().getResource("data/googleplaystore_user_reviews.csv").getFile());
+            googlePlayStoreData = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/googleplaystore.csv")));
+            googlePlayStoreReviewData = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/googleplaystore_user_reviews.csv")));
         } catch (NullPointerException e) {
             cassandraServiceImplementation.closeConnection();
             throw new Exception("Error al leer los archivos CSV.");
@@ -44,7 +45,7 @@ public class DataProcessing {
         // We'll save certain info in a map to be used when we parse the second csv
         Map<String, TempApplicationData> tempApplicationData = new HashMap<>();
 
-        BufferedReader br = new BufferedReader(new FileReader(googlePlayStoreData));
+        BufferedReader br = new BufferedReader(googlePlayStoreData);
         String line;
         br.readLine(); // Skip the first line.
         while ((line = br.readLine()) != null) {
@@ -130,7 +131,7 @@ public class DataProcessing {
         }
 
         // Parse the second csv
-        br = new BufferedReader(new FileReader(googlePlayStoreReviewData));
+        br = new BufferedReader(googlePlayStoreReviewData);
         br.readLine(); // Skip the first line.
         while ((line = br.readLine()) != null) {
             // Separate all values into an array of Strings.
