@@ -202,6 +202,15 @@ Host: ec2-13-59-226-165.us-east-2.compute.amazonaws.com
 User: cassandra_user
 Password: triton2019exito
 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ ___       __                       _
+|_ _|_ _  / _|___ _ _ _ __  __ _ __(_)___ _ _
+ | || ' \|  _/ _ \ '_| '  \/ _` / _| / _ \ ' \
+|___|_||_|_| \___/_| |_|_|_\__,_\__|_\___/_||_|
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
 Hay una serie de datos que deben tomarse en cuenta al utilizar Cassandra en el repositorio:
 
 Dato 1. Usar ALLOW FILTERING para consultas.
@@ -225,3 +234,5 @@ Lo que significa que no se puede aplicar un NOT EQUAL sobre la llave para ordena
 
 Dato 7. El operador OR no está soportado.
 Solo se puede usar AND.
+
+Dato 8. Las declaraciones dentro de un BATCH se van a correr atómicamente. Por ende, se hace en todas o ninguna.
