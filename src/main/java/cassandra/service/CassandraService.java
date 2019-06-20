@@ -70,6 +70,13 @@ public interface CassandraService {
     void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating);
 
     /**
+     * Insert a new ApplicationCategoryInstallation.
+     *
+     * @param applicationCategoryInstallation New ApplicationCategoryInstallation that will be inserted.
+     */
+    void insertApplicationCategoryInstallation(ApplicationCategoryInstallation applicationCategoryInstallation);
+
+    /**
      * Close our connection with Cassandra.
      */
     void closeConnection();

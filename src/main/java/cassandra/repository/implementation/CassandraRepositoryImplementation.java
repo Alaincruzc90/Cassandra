@@ -8,7 +8,7 @@ import com.datastax.driver.core.SimpleStatement;
 import com.datastax.driver.core.Statement;
 import model.*;
 
-public class CassandraRepositoryImplementation implements CassandraRepository {
+ public class CassandraRepositoryImplementation implements CassandraRepository {
 
     private Session session;
 
@@ -201,7 +201,31 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
         session.execute(query);
     }
 
-    /**
+     @Override
+     public void insertApplicationCategoryInstallation(ApplicationCategoryInstallation applicationCategoryInstallation) {
+         String query1 =
+                "INSERT INTO original.application_category_rating_one " +
+                        "(category, name, installs) " +
+                        "VALUES ('" + applicationCategoryInstallation.getCategory() + "', '" + applicationCategoryInstallation.getName() +
+                        "', '"+applicationCategoryInstallation.getInstalls()+"');";
+
+         String query2 =
+                "INSERT INTO original.application_category_rating_two " +
+                        "(category, name, installs) " +
+                        "VALUES ('" + applicationCategoryInstallation.getCategory() + "', '" + applicationCategoryInstallation.getName() +
+                        "', '"+applicationCategoryInstallation.getInstalls()+"');";
+
+         String query3 =
+                "INSERT INTO original.application_category_rating_three " +
+                        "(category, name, installs) " +
+                        "VALUES ('" + applicationCategoryInstallation.getCategory() + "', '" + applicationCategoryInstallation.getName() +
+                        "', '"+applicationCategoryInstallation.getInstalls()+"');";
+        session.execute(query1);
+        session.execute(query2);
+        session.execute(query3);
+     }
+
+     /**
      * {@inheritDoc}
      */
     @Override

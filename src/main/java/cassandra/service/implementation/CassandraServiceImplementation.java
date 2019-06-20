@@ -177,6 +177,15 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void insertApplicationCategoryInstallation(ApplicationCategoryInstallation applicationCategoryInstallation) {
+        this.cassandraRepository.insertApplicationCategoryInstallation(applicationCategoryInstallation);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void closeConnection() {
         try {
             cassandraConnector.close();

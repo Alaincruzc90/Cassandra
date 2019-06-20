@@ -128,6 +128,13 @@ public interface CassandraRepository {
      * @param applicationFeelingRating New ApplicationFeelingRating that will be inserted.
      */
     void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating );
+
+    /**
+     * Insert a new ApplicationCategoryInstallation.
+     *
+     * @param applicationCategoryInstallation New ApplicationCategoryInstallation that will be inserted.
+     */
+    void insertApplicationCategoryInstallation(ApplicationCategoryInstallation applicationCategoryInstallation);
     
     /**
      * Given an Detail find it's current category one total.

@@ -107,23 +107,27 @@ public class DataProcessing {
             String androidVersion = Objects.toString(values[12], "");
 
             // Now, create the needed models.
-            ApplicationPriceRating applicationPriceRating = new ApplicationPriceRating(name, type, price, rating, installs, reviewCount);
+            /*ApplicationPriceRating applicationPriceRating = new ApplicationPriceRating(name, type, price, rating, installs, reviewCount);
             ApplicationSizeRating applicationSizeRating = new ApplicationSizeRating(name, size, rating, reviewCount, installs);
             ApplicationAgeRating applicationAgeRating = new ApplicationAgeRating(contentRating, rating, reviewCount, installs);
             ApplicationGenreRating applicationGenreRating = new ApplicationGenreRating(genre, rating, reviewCount, installs, category, name);
             ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
             ApplicationCategoryRating applicationCategoryRating = new ApplicationCategoryRating(category, rating, reviewCount, installs);
-            ApplicationCategory applicationCategory = new ApplicationCategory(category, name);
+            ApplicationCategory applicationCategory = new ApplicationCategory(category, name);*/
+            ApplicationCategoryInstallation applicationCategoryInstallation = new ApplicationCategoryInstallation(name, installs, category);
 
             // Insert the new data.
-            cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
+            /*cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
             cassandraServiceImplementation.insertApplicationSizeRating(applicationSizeRating);
             cassandraServiceImplementation.insertApplicationAgeRating(applicationAgeRating);
             cassandraServiceImplementation.insertApplicationGenreRating(applicationGenreRating);
             cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
             cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
-            cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
-            rowsInserted += 7;
+            cassandraServiceImplementation.insertApplicationCategory(applicationCategory);*/
+
+            // Thism one inserts 3 rows
+            cassandraServiceImplementation.insertApplicationCategoryInstallation(applicationCategoryInstallation);
+            rowsInserted += 10;
 
             // Store necessary data for when we parse the second csv
             tempApplicationData.put(name, new TempApplicationData(category, androidVersion, rating, reviewCount, installs));
