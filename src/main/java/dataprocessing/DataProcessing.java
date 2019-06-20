@@ -7,6 +7,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DataProcessing {
@@ -41,9 +44,9 @@ public class DataProcessing {
 
             // Transform each value into an understandable variable.
             // Some transformations may need to be check if they are parsable,
-            // else we are going to save an 0.
+            // else we are going to save an 0. In case of Strings, if they are null,
+            // then we are going to insert an empty String.
             String name = values[0];
-
             if (name == null) {
                 // If the name is null we just skip this line.
                 continue;
@@ -60,7 +63,16 @@ public class DataProcessing {
             double price = NumberUtils.toDouble(values[7], 0);
             String contentRating = Objects.toString(values[8], "");
             String genre = Objects.toString(values[9], "");
+
+            // Fetch date and transform it into a format Cassandra understands.
+            // Only format the date if it is different that 0.
             String lastUpdate = Objects.toString(values[10], "");
+            if(!lastUpdate.equals("")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yy", Locale.ENGLISH);
+                LocalDate dateTime = LocalDate.parse(lastUpdate, formatter);
+                lastUpdate = dateTime.toString();
+            }
+
             String currentVersion = Objects.toString(values[11], "");
             String androidVersion = Objects.toString(values[12], "");
 
