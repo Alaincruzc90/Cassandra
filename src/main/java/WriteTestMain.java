@@ -10,7 +10,7 @@ public class WriteTestMain {
         // Number of rows that will be inserted.
         int numberOfRows = 10000;
         // Test we are running.
-        int test = 5;
+        int test = 3;
 
         // Check that we have 3 parameters, else we don't change the defaults parameters.
         if (args.length == 3) {
