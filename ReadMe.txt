@@ -220,6 +220,8 @@ Similar al uso de ORDER BY, GROUP BY solo se puede utilizar sobre la llave de pa
 Dato 5. Soporte de clausulas OFFSET
 Cassandra no soporta clausulas offset.
 
-Dato 6. La clausula NO EQUAL no está soportada.
+Dato 6. El operador NOT EQUAL no está soportado.
 Lo que significa que no se puede aplicar un NOT EQUAL sobre la llave para ordenar todos los datos al usar ORDER BY.
 
+Dato 7. El operador OR no está soportado.
+Solo se puede usar AND.
