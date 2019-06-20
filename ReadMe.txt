@@ -201,3 +201,17 @@ El repositorio se puede encontrar en la siguiente dirección y utilizando los si
 Host: ec2-13-59-226-165.us-east-2.compute.amazonaws.com
 User: cassandra_user
 Password: triton2019exito
+
+Hay una serie de datos que deben tomarse en cuenta al utilizar Cassandra en el repositorio:
+
+Dato 1. Usar ALLOW FILTERING para consultas.
+Si se quiere realizar una consulta con SELECT, se debe aplicar la clausula ALLOW FILTERING, así se podrán presentar las columnas clustering con cualquier condición.
+
+Dato 2. Llave de partición y columnas clustering.
+La llave de partición le pertenece al nodo, y es responsable por distribuir datos a lo largo de los nodos, esta es igual a una llave primaria de una sola columna.
+Las columnas de clustering determinan el orden de los datos en particiones, tienen los datos en una columna de todas las filas.
+
+Dato 3. Uso de ORDER BY.
+Cassandra tiene la limitación de que solo puede usar la clausula ORDER BY sobre la llave de partición, pero dado que las tablas ya están ordenadas por el valor de la llave, realmente el unico uso que tiene esta clausula es revertir el orden en que se presentan los datos.
+
+Dato 4.
