@@ -256,7 +256,7 @@ SELECT * FROM original.application_version_feeling GROUP BY os_version ALLOW FIL
 
 -- Se particiona según la categoría para paralelizar el cálculo de su popularidad.
 
-SELECT * FROM original.application_category_rating GROUP BY category ALLOW FILTERING;
+SELECT * FROM original.application_category_rating_two GROUP BY category ALLOW FILTERING;
 
 -- Se particiona por categoría para paralelizar el conteo de aplicaciones.
 
