@@ -89,7 +89,6 @@ public class CassandraRepositoryImplementation implements CassandraRepository {
                         "VALUES ('" + applicationPriceRating.getName() + "', '" + applicationPriceRating.getType()
                         + "', " + applicationPriceRating.getPrice() + ", " + applicationPriceRating.getRating() +
                         ", '" + applicationPriceRating.getInstalls() + "', " + applicationPriceRating.getReviewCount() + ");";
-        System.out.println(query);
         session.execute(query);
     }
 

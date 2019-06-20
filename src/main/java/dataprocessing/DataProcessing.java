@@ -11,10 +11,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class DataProcessing {
 
@@ -25,6 +22,12 @@ public class DataProcessing {
     }
 
     public void insertData() throws Exception {
+        // This will store all the rows inserted to report at the end of execution
+        int rowsInserted = 0;
+
+        // Get and print the current time.
+        long start = System.currentTimeMillis();
+        System.out.println("Starting execution at: " + Calendar.getInstance().getTime());
 
         // First read from the required data.
         File googlePlayStoreData;
@@ -73,7 +76,7 @@ public class DataProcessing {
             try{
                 size = Double.parseDouble(sizeString);
             } catch ( NumberFormatException  e) {
-                System.out.println("Could not parsse size " + sizeString + " to double for application "+name+".\nInserting 0 instead.");
+                System.out.println("Could not parse size " + sizeString + " to double for application "+name+".\nInserting 0 instead.");
                 size = 0.0;
             }
 
@@ -120,6 +123,7 @@ public class DataProcessing {
             cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
             cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
             cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
+            rowsInserted += 7;
 
             // Store necessary data for when we parse the second csv
             tempApplicationData.put(name, new TempApplicationData(category, androidVersion, rating, reviewCount, installs));
@@ -170,7 +174,16 @@ public class DataProcessing {
             // Insert the data
             cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
             cassandraServiceImplementation.insertApplicationFeelingRating(applicationFeelingRating);
+
+            rowsInserted += 2;
         }
+
+        // Get the time at the end of execution
+        long end = System.currentTimeMillis();
+
+        // Calculate and report duration
+        float sec = (end - start) / 1000F;
+        System.out.println(sec + " seconds to insert " + rowsInserted + " rows.");
 
         cassandraServiceImplementation.closeConnection();
     }
