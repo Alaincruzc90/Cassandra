@@ -236,3 +236,5 @@ Dato 7. El operador OR no está soportado.
 Solo se puede usar AND.
 
 Dato 8. Las declaraciones dentro de un BATCH se van a correr atómicamente. Por ende, se hace en todas o ninguna.
+
+Dato 9. Las declaraciones de tipo UPDATE funcionan como un "upsert", por ende, si no existe un dato, lo crea.

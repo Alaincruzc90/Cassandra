@@ -126,6 +126,11 @@ APPLY BATCH;
 
 SELECT DISTINCT os_version FROM original.application_version_feeling;
 
+- Contar la cantidad de filas que tiene una tabla.
+
+SELECT COUNT(*) FROM write_test.details;
+
+
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
   ___                 _          
  / __|_ _ ___ __ _ __(_)___ _ _  

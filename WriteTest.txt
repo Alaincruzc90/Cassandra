@@ -1,0 +1,45 @@
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ ___              _             
+| _ \_ _ _  _ ___| |__  __ _ ___
+|  _/ '_| || / -_) '_ \/ _` (_-<
+|_| |_|  \_,_\___|_.__/\__,_/__/
+                                                 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+
+Hemos creado varias pruebas para probar la velocidad de escritura de Cassandra utilizando diferentes declaraciones. Se crearon cinco tablas para estas pruebas. Una tabla donde guardaremos datos sobre un detalle en particular. Cada detalle tiene dos categorías y un valor asociado. Las demás tablas son tablas ajustadas a consultas de agrupación. Dos tablas contienen la suma de todos los valores de cada categoría. Por ultimo, las otros dos restantes tienen la misma información, pero en vez de guardar un dato tipo entero, utilizando otro tipo de dato llamando COUNTER, el cual nos permite realizar un UPDATE con la siguiente sintaxis "SET total = total + n, donde n" puede ser cualquier valor entero.
+
+La metodología es igual para cada prueba, se generan una X cantidad de detalles, desde una T cantidad de hilos, los cuales se dividen en partes iguales la creación de los detalles. Por ende, cada hilo va a correr X/T detalles. Cada detalle tiene una llave alfa numérica auto generada de 15 caracteres, por lo cual es muy poco probable que se repita. Cada prueba mide el tiempo que duro su ejecución.
+
+Prueba #1: Se ingresan X cantidad de detalles nuevos.
+
+Prueba #2: Se ingresan X cantidad de detalles nuevos. Por cada detalle, hay un tercio de probabilidad de tener que realizar una lectura y modificar un dato.
+
+Prueba #3: Se ingresan X cantidad de detalles nuevos. Por cada detalle, se genera una lectura y se actualiza un dato.
+
+Prueba #4: Se ingresan X cantidad de detalles nuevos. Por cada detalle, se realiza un update utilizando un UPDATE de un counter.
+
+Prueba #5: Se ingresan X cantidad de detalles nuevos. Por cada detalle, hay un tercio de probabilidad de tener que realizar dos lecturas y modificar dos datos en diferentes tables.
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ ___             _ _           _        
+| _ \___ ____  _| | |_ __ _ __| |___ ___
+|   / -_|_-< || | |  _/ _` / _` / _ (_-<
+|_|_\___/__/\_,_|_|\__\__,_\__,_\___/__/
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+Para cada prueba se utilizaron 100 hilos y 50.000 detalles. Se realiza cada prueba en tablas varias. Las pruebas se volverán a correr en clases.
+
+Prueba #1: Tiempo -> 7s
+
+Prueba #2: Tiempo -> 10.5s | Lecturas -> 16351
+
+Prueba #3: Tiempo 16s | Lecturas -> 50000
+
+Prueba #4: Tiempo 10.7s | Lecturas -> 0
+
+Prueba #5: Tiempo 11.5s | Lecturas -> 33462
+                                        
+
