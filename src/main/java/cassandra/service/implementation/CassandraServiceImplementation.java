@@ -1,7 +1,6 @@
 package cassandra.service.implementation;
 
 import cassandra.connector.CassandraConnector;
-import cassandra.repository.CassandraRepository;
 import cassandra.repository.implementation.CassandraRepositoryImplementation;
 import cassandra.service.CassandraService;
 import com.datastax.driver.core.BatchStatement;
