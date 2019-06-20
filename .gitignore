@@ -10,3 +10,4 @@ gen
 src/main/resources/.DS_Store
 target/
 /src/main/java/Main.java
+src/main/resources/META-INF/*
