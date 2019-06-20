@@ -5,10 +5,7 @@ import cassandra.repository.implementation.CassandraRepositoryImplementation;
 import cassandra.service.CassandraService;
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Statement;
-import model.ApplicationPriceRating;
-import model.CategoryOneTotal;
-import model.CategoryTwoTotal;
-import model.Detail;
+import model.*;
 
 import java.util.ResourceBundle;
 
@@ -79,8 +76,24 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void insertApplicationSizeRating(ApplicationSizeRating applicationSizeRating) {
+        this.cassandraRepository.insertApplicationSizeRating(applicationSizeRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void insertCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
         this.cassandraRepository.insertCategoryTwoTotal(categoryTwoTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationAgeRating(ApplicationAgeRating applicationAgeRating) {
+        this.cassandraRepository.insertApplicationAgeRating(applicationAgeRating);
     }
 
     /**
@@ -90,6 +103,13 @@ public class CassandraServiceImplementation implements CassandraService {
     public void updateCategoryOneTotal(CategoryOneTotal categoryOneTotal) {
         this.cassandraRepository.updateCategoryOneTotal(categoryOneTotal);
     }
+  
+    /**
+     * {@inheritDoc}
+     */
+    public void insertApplicationGenreRating(ApplicationGenreRating applicationGenreRating) {
+        this.cassandraRepository.insertApplicationGenreRating(applicationGenreRating);
+    }
 
     /**
      * {@inheritDoc}
@@ -97,6 +117,13 @@ public class CassandraServiceImplementation implements CassandraService {
     @Override
     public void updateCategoryTwoTotal(CategoryTwoTotal categoryTwoTotal) {
         this.cassandraRepository.updateCategoryTwoTotal(categoryTwoTotal);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void insertApplicationDateRating(ApplicationDateRating applicationDateRating) {
+        this.cassandraRepository.insertApplicationDateRating(applicationDateRating);
     }
 
     /**
@@ -111,8 +138,39 @@ public class CassandraServiceImplementation implements CassandraService {
      * {@inheritDoc}
      */
     @Override
+    public void insertApplicationVersionFeeling(ApplicationVersionFeeling applicationVersionFeeling) {
+        this.cassandraRepository.insertApplicationVersionFeeling(applicationVersionFeeling);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public CategoryTwoTotal findCategoryTwoById(Detail detail) {
         return this.cassandraRepository.findCategoryTwoById(detail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void insertApplicationCategoryRating(ApplicationCategoryRating applicationCategoryRating) {
+        this.cassandraRepository.insertApplicationCategoryRating(applicationCategoryRating);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationCategory(ApplicationCategory applicationCategory) {
+        this.cassandraRepository.insertApplicationCategory(applicationCategory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void insertApplicationFeelingRating(ApplicationFeelingRating applicationFeelingRating) {
+        this.cassandraRepository.insertApplicationFeelingRating(applicationFeelingRating);
     }
 
     /**

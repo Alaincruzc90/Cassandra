@@ -1,15 +1,19 @@
 package dataprocessing;
 
 import cassandra.service.implementation.CassandraServiceImplementation;
-import model.ApplicationPriceRating;
+import model.*;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class DataProcessing {
@@ -34,6 +38,9 @@ public class DataProcessing {
         }
 
         // Iterate through all the lines of the google applications' data.
+        // We'll save certain info in a map to be used when we parse the second csv
+        Map<String, TempApplicationData> tempApplicationData = new HashMap<>();
+
         BufferedReader br = new BufferedReader(new FileReader(googlePlayStoreData));
         String line;
         br.readLine(); // Skip the first line.
@@ -44,7 +51,7 @@ public class DataProcessing {
 
             // Transform each value into an understandable variable.
             // Some transformations may need to be check if they are parsable,
-            // else we are going to save an 0. In case of Strings, if they are null,
+            // else we are going to save a 0. In case of Strings, if they are null,
             // then we are going to insert an empty String.
             String name = values[0];
             if (name == null) {
@@ -57,7 +64,19 @@ public class DataProcessing {
             String category = Objects.toString(values[1], "");
             float rating = NumberUtils.toFloat(values[2], 0);
             int reviewCount = NumberUtils.toInt(values[3], 0);
-            String size = Objects.toString(values[4], "");
+
+            // The size is a string with an appended M at the end most of the time
+            // Otherwise is it exactly "Varies with size", in which case we'll insert a 0
+            // We will ignore the m and try to parse it as a double
+            String sizeString = Objects.toString(values[4], "").substring(0, values[4].length() - 1);
+            Double size;
+            try{
+                size = Double.parseDouble(sizeString);
+            } catch ( NumberFormatException  e) {
+                System.out.println("Could not parsse size " + sizeString + " to double for application "+name+".\nInserting 0 instead.");
+                size = 0.0;
+            }
+
             String installs = Objects.toString(values[5], "");
             String type = Objects.toString(values[6], "");
             double price = NumberUtils.toDouble(values[7], 0);
@@ -69,21 +88,132 @@ public class DataProcessing {
             String lastUpdate = Objects.toString(values[10], "");
             if(!lastUpdate.equals("")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yy", Locale.ENGLISH);
-                LocalDate dateTime = LocalDate.parse(lastUpdate, formatter);
-                lastUpdate = dateTime.toString();
+                LocalDate dateTime;
+                try {
+                    // Attempt to parse the date and then convert it to string
+                    dateTime = LocalDate.parse(lastUpdate, formatter);
+                    lastUpdate = dateTime.toString();
+                } catch(DateTimeParseException e) {
+                    // If the date was incorrect, insert an empty string
+                    lastUpdate = "";
+                }
+
             }
 
             String currentVersion = Objects.toString(values[11], "");
             String androidVersion = Objects.toString(values[12], "");
 
-            // Now, created the needed models.
+            // Now, create the needed models.
             ApplicationPriceRating applicationPriceRating = new ApplicationPriceRating(name, type, price, rating, installs, reviewCount);
+            ApplicationSizeRating applicationSizeRating = new ApplicationSizeRating(name, size, rating, reviewCount, installs);
+            ApplicationAgeRating applicationAgeRating = new ApplicationAgeRating(contentRating, rating, reviewCount, installs);
+            ApplicationGenreRating applicationGenreRating = new ApplicationGenreRating(genre, rating, reviewCount, installs, category, name);
+            ApplicationDateRating applicationDateRating  = new ApplicationDateRating (name, lastUpdate, rating, installs, reviewCount);
+            ApplicationCategoryRating applicationCategoryRating = new ApplicationCategoryRating(category, rating, reviewCount, installs);
+            ApplicationCategory applicationCategory = new ApplicationCategory(category, name);
 
-            // Add the new data.
+            // Insert the new data.
             cassandraServiceImplementation.insertApplicationPriceRating(applicationPriceRating);
+            cassandraServiceImplementation.insertApplicationSizeRating(applicationSizeRating);
+            cassandraServiceImplementation.insertApplicationAgeRating(applicationAgeRating);
+            cassandraServiceImplementation.insertApplicationGenreRating(applicationGenreRating);
+            cassandraServiceImplementation.insertApplicationDateRating(applicationDateRating);
+            cassandraServiceImplementation.insertApplicationCategoryRating(applicationCategoryRating);
+            cassandraServiceImplementation.insertApplicationCategory(applicationCategory);
 
+            // Store necessary data for when we parse the second csv
+            tempApplicationData.put(name, new TempApplicationData(category, androidVersion, rating, reviewCount, installs));
+        }
+
+        // Parse the second csv
+        br = new BufferedReader(new FileReader(googlePlayStoreReviewData));
+        br.readLine(); // Skip the first line.
+        while ((line = br.readLine()) != null) {
+            // Separate all values into an array of Strings.
+            String[] values = line.split(",");
+
+            // Transform each value into an understandable variable.
+            // Some transformations may need to be check if they are parsable,
+            // else we are going to save a 0. In case of Strings, if they are null,
+            // then we are going to insert an empty String.
+            String name = values[0];
+
+            if (name == null || !tempApplicationData.containsKey(name)) {
+                // If the name is null or we have no application data for this review, skip this line.
+                continue;
+            } else {
+                name = name.replace("'", "''");
+            }
+
+            String sentimentString = values[2];
+            Float sentimentPolarity, sentimentSubjectivity;
+            try {
+                sentimentPolarity = Float.parseFloat(values[3]);
+                sentimentSubjectivity =  Float.parseFloat(values[4]);
+            } catch(NumberFormatException e) {
+                sentimentPolarity = 0f;
+                sentimentSubjectivity = 0f;
+            }
+
+            // Retrieve the info for the app to which this review belongs, to be used when creating the models
+            TempApplicationData applicationData = tempApplicationData.get(name);
+
+            // Create the needed models
+            ApplicationVersionFeeling applicationVersionFeeling = new ApplicationVersionFeeling(
+                    applicationData.getAndroidVersion(), sentimentPolarity, applicationData.getRating(),
+                    applicationData.getReviewCount(), applicationData.getInstalls(), name);
+            ApplicationFeelingRating applicationFeelingRating = new ApplicationFeelingRating(
+                    name, sentimentString, applicationData.getRating(),
+                    applicationData.getReviewCount());
+
+
+            // Insert the data
+            cassandraServiceImplementation.insertApplicationVersionFeeling(applicationVersionFeeling);
+            cassandraServiceImplementation.insertApplicationFeelingRating(applicationFeelingRating);
         }
 
         cassandraServiceImplementation.closeConnection();
     }
+}
+
+class TempApplicationData {
+
+    private String category;
+    private String androidVersion;
+    private Float rating;
+    private Integer reviewCount;
+    private String installs;
+
+    public TempApplicationData(String category, String androidVersion, Float rating, Integer reviewCount, String installs) {
+        this.category = category;
+        this.androidVersion = androidVersion;
+        this.rating = rating;
+        this.reviewCount = reviewCount;
+        this.installs = installs;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAndroidVersion() {
+        return androidVersion;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public String getInstalls() {
+        return installs;
+    }
+
 }
