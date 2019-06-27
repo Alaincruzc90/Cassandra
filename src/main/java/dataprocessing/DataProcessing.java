@@ -83,7 +83,18 @@ public class DataProcessing {
 
             String installs = Objects.toString(values[5], "");
             String type = Objects.toString(values[6], "");
-            double price = NumberUtils.toDouble(values[7], 0);
+
+            // The price is a string with an appended $ at the start most of the time
+            // Otherwise is it exactly 0, in which case we'll insert a 0
+            // We will ignore the $ and try to parse it as a double
+            String priceString = Objects.toString(values[7], "").substring(1);
+            Double price;
+            try{
+                price = Double.parseDouble(priceString);
+            } catch ( NumberFormatException  e) {
+                System.out.println("Could not parse price " + priceString + " to double for application "+name+".\nInserting 0 instead.");
+                price = 0.0;
+            }
             String contentRating = Objects.toString(values[8], "");
             String genre = Objects.toString(values[9], "");
 
