@@ -12,3 +12,4 @@ src/main/resources/.DS_Store
 target/
 /src/main/java/Main.java
 src/main/resources/META-INF/*
+src/main/resources/properties/cassandra.properties
