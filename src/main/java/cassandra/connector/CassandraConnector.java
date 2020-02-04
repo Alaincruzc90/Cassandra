@@ -12,8 +12,8 @@ public class CassandraConnector {
 
         // Had to add connection string manually, because it was giving a weird error.
         Cluster.Builder builder = Cluster.builder()
-                .addContactPoint("13.59.226.165")
-                .withCredentials("cassandra_user", "triton2019exito");
+                .addContactPoint(node)
+                .withCredentials(username, password);
 
         if (port != null) {
             builder.withPort(port);
