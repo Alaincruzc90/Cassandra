@@ -112,7 +112,6 @@ public class DataProcessing {
 
             }
 
-            String currentVersion = Objects.toString(values[11], "");
             String androidVersion = Objects.toString(values[12], "");
 
             // Now, create the needed models.
@@ -163,13 +162,11 @@ public class DataProcessing {
             }
 
             String sentimentString = values[2];
-            Float sentimentPolarity, sentimentSubjectivity;
+            Float sentimentPolarity;
             try {
                 sentimentPolarity = Float.parseFloat(values[3]);
-                sentimentSubjectivity =  Float.parseFloat(values[4]);
             } catch(NumberFormatException e) {
                 sentimentPolarity = 0f;
-                sentimentSubjectivity = 0f;
             }
 
             // Retrieve the info for the app to which this review belongs, to be used when creating the models
